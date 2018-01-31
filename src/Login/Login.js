@@ -3,6 +3,7 @@ import "./Login.css";
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import LoginForm from './Component/LoginForm';
+import Loader from "../Loader/Loader";
 
 class Login extends Component {
 	constructor(props) {
@@ -14,7 +15,8 @@ class Login extends Component {
 			},
 			sessionID: localStorage.getItem('sessionID'),
 			baseUrl: localStorage.getItem('baseUrl'),
-			corsUrl: localStorage.getItem('corsUrl')
+			corsUrl: localStorage.getItem('corsUrl'),
+			loading: false
 
 		}
 
@@ -37,18 +39,25 @@ class Login extends Component {
 	handleSubmit(event) {
 		event.preventDefault();
 		let url = this.state.corsUrl + this.state.baseUrl + '/rest/default/V1/webpos/staff/login';
+        this.setState({
+            loading: true
+        });
 		axios.post(url, {
 			staff: this.state.staff
 		})
 			.then(response => {
-				alert(response.data);
+				console.log(response.data);
 				localStorage.setItem('sessionID', response.data);
 				this.setState({
-					sessionID: response.data
+					sessionID: response.data,
+					loading: false
 				});
 			})
 			.catch(error => {
-				console.log(error.response);
+                this.setState({
+                    loading: false
+                });
+				alert('Your login information is wrong!');
 			})
 
 	}
@@ -58,10 +67,15 @@ class Login extends Component {
 			return <Redirect to='/checkout' />;
 		}
 		return (
-			<LoginForm 
-				handleInputChange={this.handleInputChange}
-				handleSubmit={this.handleSubmit}
-			/>
+			<div>
+				{
+					this.state.loading ? <Loader/> : ''
+				}
+                <LoginForm
+                    handleInputChange={this.handleInputChange}
+                    handleSubmit={this.handleSubmit}
+                />
+			</div>
 		);
 	}
 }

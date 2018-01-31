@@ -7,13 +7,18 @@ const ProductItem = (props) => {
 		<div className="col-sm-3">
             <div className="item product-item">
                 <div className="product-img">
-                    <a className="warning"><span className="icon-iconPOS-out-of-stock"></span></a>
+                    {
+                        product.is_in_stock == 0 ?<a className="warning"><span className="icon-iconPOS-out-of-stock"></span></a> : ''
+                    }
                     <img width="119" height="auto" src={product.image}/>
                 </div>
                 <div className="product-info">
                     <h3 className="product-name">{product.name}</h3>
                     <div>
-                        <span className="regular-price price">${product.price}</span>
+                        <span className="final-price price">${product.final_price}</span>
+                        {
+                            product.price != product.final_price ? <span class="regular-price price">${product.price}</span> : ''
+                        }
                     </div>
                     <span>Availability: </span><label className="available_qty">{product.qty} item(s)</label>
                     <label className="available_qty">&nbsp;</label>

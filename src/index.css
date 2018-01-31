@@ -1,5 +1,117 @@
+.modal-backdrop.in {
+  display:none;
+}
+@font-face {
+  font-family:'icomoon';
+  src:url(./resources/fonts/icomoon/icomoon.eot?m55dj3);
+  src:url(./resources/fonts/icomoon/icomoon.eot?m55dj3#iefix) format("embedded-opentype"),
+  url(./resources/fonts/icomoon/icomoon.ttf?m55dj3) format("truetype"),
+  url(./resources/fonts/icomoon/icomoon.woff?m55dj3) format("woff"),
+  url(./resources/fonts/icomoon/icomoon.svg?m55dj3#icomoon) format("svg");
+  font-weight:400;
+  font-style:normal
+}
+[class^="icon-"],[class*=" icon-"] {
+  font-size:24px;
+  color: #768496;
+  font-family:'icomoon'!important;
+  speak:none;font-style:normal;
+  font-weight:400;font-variant:normal;
+  text-transform:none;
+  line-height:1;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale
+}
+[class^="icon-icon"]:hover,[class*=" icon-icon"]:hover{color: #000;}
+.icon-iconPOS-payment-storecredit:before{content:"\e903"}
+.icon-iconPOS-reload:before {content:"\e933";}
+.icon-iconPOS-no-sync-29:before{content:"\e932"}
+.icon-iconPOS-checked:before{content:"\e900"}
+.icon-iconPOS-edit-28:before{content:"\e901"}
+.icon-iconPOS-empty-shift:before{content:"\e905"}
+.icon-iconPOS-logout:before{content:"\e904"}
+.icon-iconPOS-emptycart:before{content:"\e902"}
+.icon-iconPOS-payment-cp1forpos:before{content:"\e92b"}
+.icon-iconPOS-payment-cp2forpos:before{content:"\e903"}
+.icon-iconPOS-empty-customer:before{content:"\e907"}
+.icon-iconPOS-empty-order:before{content:"\e908"}
+.icon-iconPOS-payment-authorizenet_directpost:before{content:"\e906"}
+.icon-iconPOS-payment-cryozonic_stripe:before{content:"\e906"}
+.icon-iconPOS-payment-cashforpos:before{content:"\e92b"}
+.icon-iconPOS-payment-cashforpos .path1:before{content:"\e92c";color:#a5a5aa}
+.icon-iconPOS-payment-cashforpos .path2:before{content:"\e92d";margin-left:-1em;color:#a5a5aa}
+.icon-iconPOS-payment-cashforpos .path3:before{content:"\e92e";margin-left:-1em;color:#a3a4a8}
+.icon-iconPOS-payment-cashforpos .path4:before{content:"\e92f";margin-left:-1em;color:#a5a5aa}
+.icon-iconPOS-payment-ccforpos:before{content:"\e906"}
+.icon-iconPOS-payment-codforpos:before{content:"\e930"}
+.icon-iconPOS-payment-defaultforpos:before{content:"\e931"}
+.icon-iconPOS-remove:before{content:"\e909"}
+.icon-iconPOS-success .path1:before{content:"\e90a";color:#c9c9c9}
+.icon-iconPOS-success .path2:before{content:"\e90b";margin-left:-1em;color:#00a679}
+.icon-iconPOS-update:before{content:"\e90c"}
+.icon-iconPOS-add:before{content:"\e90d"}
+.icon-iconPOS-cal-del:before{content:"\e90e"}
+.icon-iconPOS-delete:before{content:"\e90f"}
+.icon-iconPOS-alert:before{content:"\e910"}
+.icon-iconPOS-next-image-slide:before{content:"\e911"}
+.icon-iconPOS-next:before{content:"\e912"}
+.icon-iconPOS-image:before{content:"\e913"}
+.icon-iconPOS-previous-image-slide:before{content:"\e914"}
+.icon-iconPOS-previous:before{content:"\e915"}
+.icon-iconPOS-account:before{content:"\e916"}
+.icon-iconPOS-up:before{content:"\e917"}
+.icon-iconPOS-customer-list:before{content:"\e918"}
+.icon-iconPOS-customer-sale:before{content:"\e919"}
+.icon-iconPOS-detail .path1:before{content:"\e91a";color:#b0bec5}
+.icon-iconPOS-detail .path2:before{content:"\e91b";margin-left:-1em;color:#00a679}
+.icon-iconPOS-inventory:before{content:"\e91c"}
+.icon-iconPOS-on-hold-order:before{content:"\e91d"}
+.icon-iconPOS-order-history:before{content:"\e91e"}
+.icon-iconPOS-out-of-stock:before{content:"\e91f"}
+.icon-iconPOS-setting:before{content:"\e920"}
+.icon-iconPOS-shift:before{content:"\e921"}
+.icon-iconPOS-synchronize:before{content:"\e922"}
+.icon-iconPOS-categories:before{content:"\e923"}
+.icon-iconPOS-change-customer:before{content:"\e924"}
+.icon-iconPOS-checkout:before{content:"\e925"}
+.icon-iconPOS-dropdown:before{content:"\e926"}
+.icon-iconPOS-edit-customer:before{content:"\e927"}
+.icon-iconPOS-more:before{content:"\e928"}
+.icon-iconPOS-search:before{content:"\e929"}
+.icon-iconPOS-menu:before{content:"\e92a"}
+
+#new_customer_dob {
+  width: 200px;
+  padding: 2px 20px;
+  border: 1px solid #d7d7d7;
+  height: 35px;
+  background: url(./resources/images/calendar.png) no-repeat 98% center;
+  cursor: pointer
+}
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+  color: #6f7d90;
+  background-color: #fff;
+  font-family: 'Open Sans',sans-serif!important;
+  font-size:13px;line-height: 1.4;
+}
+a {
+  cursor: pointer;
+}
+a:hover, a:focus, a:visited, a:active {
+  color: #3c4857;
+  text-decoration: none;
+  cursor: pointer;
+  outline:0;
+  outline:none;
+}
+.label {
+  font-size:100%;
+  font-weight:400
+}
+label {
+  font-weight:400
+}
+*:active,
+*:focus {
+  outline:none;
 }
