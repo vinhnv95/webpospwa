@@ -13,25 +13,53 @@ class ProductList extends Component {
             sessionID: localStorage.getItem('sessionID'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
+            searchText: '',
+            currentPage: 1,
             loading: false
         };
 
         this.reloadProductList = this.reloadProductList.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
     }
 
     componentWillMount() {
         this.reloadProductList(1);
     }
 
-    reloadProductList(currentPage) {
+    handleSearch(searchText) {
+        if (this.state.searchText !== searchText) {
+            this.setState({
+                currentPage: 1
+            });
+        }
+        this.setState({
+            searchText: searchText
+        }, function () {
+            this.reloadProductList();
+        });
+
+
+    }
+
+    handleChangePage(page) {
+        this.setState({
+            currentPage: page
+        }, function () {
+            this.reloadProductList();
+        });
+    }
+
+    reloadProductList() {
+        let qs = require('qs');
         let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/productlist/';
         let requestData = {
             show_out_stock: 1,
             searchCriteria: {
-                'current_page': currentPage,
-                'page_size': 16,
-                'sortOrders': {
-                    '1': {
+                current_page: this.state.currentPage,
+                page_size: 16,
+                sortOrders: {
+                    1: {
                         field: 'name',
                         direction: 'ASC'
                     }
@@ -39,7 +67,26 @@ class ProductList extends Component {
             },
             session: this.state.sessionID
         };
-        let qs = require('qs');
+        let filterGroups = {
+            0: {
+                filters: {
+                    0: {
+                        field: 'name',
+                        value: '%'+this.state.searchText+'%',
+                        condition_type: 'like'
+                    },
+                    1: {
+                        field: 'sku',
+                        value: '%'+this.state.searchText+'%',
+                        condition_type: 'like'
+                    }
+                }
+            }
+        };
+
+        if (this.state.searchText) {
+            requestData.searchCriteria.filter_groups = filterGroups;
+        }
 
         this.setState({
             loading: true
@@ -60,7 +107,6 @@ class ProductList extends Component {
             },
         })
             .then(response => {
-                console.log(response.data);
                 localStorage.setItem('productList', JSON.stringify(response.data) );
                 this.setState({
                     productList: response.data,
@@ -79,11 +125,11 @@ class ProductList extends Component {
     render() {
         return (
             <div>
-                <CatalogHeader/>
+                <CatalogHeader onSearch={this.handleSearch}/>
                 {
                     this.state.loading ?
-                        <div class="col-sm-8 col-left wrap-list-product" id='product-list-overlay' style={{opacity: 1, backgroundColor: '#fff', position: 'fixed', display: 'block', zIndex: 99999}}>
-                            <span class="product-loader"></span>
+                        <div className="col-sm-8 col-left wrap-list-product" id='product-list-overlay' style={{opacity: 1, backgroundColor: '#fff', position: 'fixed', display: 'block', zIndex: 99999}}>
+                            <span className="product-loader"></span>
                         </div>
                     :
                         <div>
@@ -109,7 +155,7 @@ class ProductList extends Component {
                                     </div>
                                 </div>
                             </main>
-                            <CatalogFooter onChangePage={this.reloadProductList}
+                            <CatalogFooter onChangePage={this.handleChangePage}
                                            currentPage={this.state.productList.search_criteria.current_page}
                                            pageSize={this.state.productList.search_criteria.page_size}
                                            totalCount={this.state.productList.total_count}

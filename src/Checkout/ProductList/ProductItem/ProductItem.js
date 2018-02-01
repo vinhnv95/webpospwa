@@ -17,7 +17,7 @@ const ProductItem = (props) => {
                     <div>
                         <span className="final-price price">${product.final_price.toFixed(2)}</span>
                         {
-                            product.price && product.price !== product.final_price && product.price !== 0 ? <span class="regular-price price">${product.price.toFixed(2)}</span> : ''
+                            product.price && product.price !== product.final_price && product.price !== 0 ? <span className="regular-price price">${product.price.toFixed(2)}</span> : ''
                         }
                     </div>
                     <span>Availability: </span><label className="available_qty">{product.qty} item(s)</label>
