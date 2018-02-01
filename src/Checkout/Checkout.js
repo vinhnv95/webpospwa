@@ -3,7 +3,6 @@ import './Checkout.css';
 import { Redirect } from 'react-router-dom';
 import Layout from "../Layout/Layout";
 import ProductList from "./ProductList/ProductList";
-import CatalogHeader from "./CatalogHeader/CatalogHeader";
 
 class Checkout extends Component {
 	constructor(props) {
@@ -19,7 +18,6 @@ class Checkout extends Component {
 				<Layout>
                     <div id='checkout_container' className="showMenu">
                         <div className="col-sm-8 col-left" id="product-list-wrapper">
-                            <CatalogHeader/>
 							<ProductList/>
                         </div>
                     </div>
