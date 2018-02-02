@@ -124,44 +124,46 @@ class ProductList extends Component {
 
     render() {
         return (
-            <div>
-                <CatalogHeader onSearch={this.handleSearch}/>
-                {
-                    this.state.loading ?
-                        <div className="col-sm-8 col-left wrap-list-product" id='product-list-overlay' style={{opacity: 1, backgroundColor: '#fff', position: 'fixed', display: 'block', zIndex: 99999}}>
-                            <span className="product-loader"></span>
-                        </div>
-                    :
-                        <div>
-                            <main className="main-content">
-                                <div id="block-product-list">
-                                    <div className="grid-data">
-                                        <div className="wrap-list-product scroll-grid">
-                                            <div className="col-md-12">
-                                                {
-                                                    this.state.productList ?
-                                                        <div className="row">
-                                                            {
-                                                                this.state.productList.items.map(product => <ProductItem product={product} key={product.id}/>)
-                                                            }
-                                                        </div>
-                                                        :
-                                                        <div>
-                                                            <span>We couldn't find any records.</span>
-                                                        </div>
-                                                }
+            <div id="block-product-list" data-bind="scope:'product-list'">
+                <div className="col-sm-8 col-left" id="product-list-wrapper">
+                    <CatalogHeader onSearch={this.handleSearch}/>
+                    {
+                        this.state.loading ?
+                            <div className="col-sm-8 col-left wrap-list-product" id='product-list-overlay' style={{opacity: 1, backgroundColor: '#fff', position: 'fixed', display: 'block', zIndex: 99999}}>
+                                <span className="product-loader"></span>
+                            </div>
+                            :
+                            <div>
+                                <main className="main-content">
+                                    <div id="block-product-list">
+                                        <div className="grid-data">
+                                            <div className="wrap-list-product scroll-grid">
+                                                <div className="col-md-12">
+                                                    {
+                                                        this.state.productList ?
+                                                            <div className="row">
+                                                                {
+                                                                    this.state.productList.items.map(product => <ProductItem product={product} key={product.id}/>)
+                                                                }
+                                                            </div>
+                                                            :
+                                                            <div>
+                                                                <span>We couldn't find any records.</span>
+                                                            </div>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </main>
-                            <CatalogFooter onChangePage={this.handleChangePage}
-                                           currentPage={this.state.productList.search_criteria.current_page}
-                                           pageSize={this.state.productList.search_criteria.page_size}
-                                           totalCount={this.state.productList.total_count}
-                            />
-                        </div>
-                }
+                                </main>
+                                <CatalogFooter onChangePage={this.handleChangePage}
+                                               currentPage={this.state.productList.search_criteria.current_page}
+                                               pageSize={this.state.productList.search_criteria.page_size}
+                                               totalCount={this.state.productList.total_count}
+                                />
+                            </div>
+                    }
+                </div>
             </div>
         );
     }

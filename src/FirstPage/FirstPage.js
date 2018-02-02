@@ -31,7 +31,7 @@ class FirstPage extends Component {
                         <div className="col-xs-12">
                             <div className="form-wrap">
                                 <h1>Welcome To Webpos</h1>
-                                <h2>Please Insert Your Website's Base Url</h2>
+                                <p>Please Insert Your Website's Base Url</p>
                                 <form id="first-page-form" autoComplete="off" onSubmit={this.handleSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="baseUrl" className="sr-only">BaseUrl</label>

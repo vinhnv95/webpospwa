@@ -20,7 +20,7 @@
     margin-bottom: 20px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1000px) {
     #first-page .form-wrap {
         width: 80%;
         margin: 0 auto;

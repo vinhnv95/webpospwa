@@ -63,6 +63,9 @@ class Login extends Component {
 	}
 
 	render() {
+		if (!this.state.corsUrl) {
+            return <Redirect to='/' />;
+        }
 		if (this.state.sessionID) {
 			return <Redirect to='/checkout' />;
 		}

@@ -17,6 +17,7 @@ export default class Layout extends Component {
         };
         this.openMenu = this.openMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
+        console.log(window.screen.orientation);
     }
 
     openMenu() {

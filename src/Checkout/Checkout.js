@@ -17,9 +17,7 @@ class Checkout extends Component {
 			return (
 				<Layout>
                     <div id='checkout_container' className="showMenu">
-                        <div className="col-sm-8 col-left" id="product-list-wrapper">
-							<ProductList/>
-                        </div>
+						<ProductList/>
                     </div>
 				</Layout>
 			);
