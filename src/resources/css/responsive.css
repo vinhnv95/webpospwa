@@ -596,12 +596,25 @@
     .ms-webpos .main-content .final-price {font-size: 100%;}
     .ms-webpos .main-content .regular-price {font-size: 100%;margin-left:10px}
 
-    /* Custom col style */
-    .col-sm-8 {
-        width: 66.66666667%;
-    }
 }
 @media (min-width: 1368px) and (max-width: 1599px){
     .list-product-footer .wrap-footer #productPager .pagination-pos .pager-list .pager{margin:0}
 }
 
+@media (max-width: 1000px){
+    /* Custom col style */
+    .col-sm-8 {
+        width: 66.66666667%;
+    }
+    #block-product-list .product-img {
+        float: left;
+        width: 25%;
+        height: 100%;
+    }
+    #block-product-list .product-img img{
+        max-height: 100%;
+    }
+    #block-product-list .product-info {
+        padding-left: 30%;
+    }
+}

@@ -229,7 +229,7 @@ body #checkout_container .main-content:hover ::-webkit-scrollbar{visibility: vis
 .o-header .actions-customer .add-customer .icon-iconPOS-edit-customer{display:inline-block;vertical-align: middle}
 .o-header .actions-customer{display:flex;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;width:100%;box-shadow:0 0 0;border:0 none;border-bottom:1px solid #d7d7d7;background:#fff}
 .list-product-footer .wrap-footer{display:flex;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between}
-.list-product-footer .wrap-footer #productPager .pagination-pos{display:flex;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between}
+.list-product-footer .wrap-footer #productPager .pagination-pos{display:flex;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;list-style:none;}
 .list-product-footer .wrap-footer #productPager .pagination-pos .pager-list .pager{color:#464646;font-size:120%;vertical-align: middle;display: inline-block;margin: 3px 5px 0;}
 .list-product-footer .wrap-footer .product-total-loading .progress{    margin-bottom: 0;display: inline-block;width: 150px;vertical-align: middle;margin-left: 20px;}
 
