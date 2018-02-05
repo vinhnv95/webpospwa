@@ -3,6 +3,9 @@ import './ProductItem.css';
  
 const ProductItem = (props) => {
 	let product = props.product;
+    let baseUrl = localStorage.getItem('baseUrl');
+    let image = product.image.replace(product.image.split('://')[0], baseUrl.split('://')[0]);
+
 	return (
 		<div className="col-sm-3">
             <div className="item product-item">
@@ -10,7 +13,7 @@ const ProductItem = (props) => {
                     {
                         product.is_in_stock === 0 ?<a className="warning"><span className="icon-iconPOS-out-of-stock"></span></a> : ''
                     }
-                    <img width="119" height="auto" src={product.image}/>
+                    <img width="119" height="auto" src={image}/>
                 </div>
                 <div className="product-info">
                     <h3 className="product-name">{product.name}</h3>
