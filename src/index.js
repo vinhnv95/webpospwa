@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import routes from './routes';
 
-localStorage.setItem('corsUrl', 'http://vinh-cors.herokuapp.com/');
+localStorage.setItem('corsUrl', 'https://vinh-cors.herokuapp.com/');
 
 ReactDOM.render(routes, document.getElementById('root'));
 registerServiceWorker();
