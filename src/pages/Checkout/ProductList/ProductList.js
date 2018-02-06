@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import './ProductList.css';
 import axios from "axios/index";
 import ProductItem from "./ProductItem/ProductItem";
-import Loader from "../../Loader/Loader";
-import CatalogHeader from "../CatalogHeader/CatalogHeader";
-import CatalogFooter from "../CatalogFooter/CatalogFooter";
+import CatalogHeader from "./CatalogHeader/CatalogHeader";
+import CatalogFooter from "./CatalogFooter/CatalogFooter";
 
 class ProductList extends Component {
     constructor(props) {
@@ -13,6 +12,7 @@ class ProductList extends Component {
             sessionID: localStorage.getItem('sessionID'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
+            categoryId: null,
             searchText: '',
             currentPage: 1,
             loading: false
@@ -21,6 +21,7 @@ class ProductList extends Component {
         this.reloadProductList = this.reloadProductList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
+        this.handleSelectCategory = this.handleSelectCategory.bind(this);
     }
 
     componentWillMount() {
@@ -34,7 +35,24 @@ class ProductList extends Component {
             });
         }
         this.setState({
+            categoryId: null,
             searchText: searchText
+        }, function () {
+            this.reloadProductList();
+        });
+
+
+    }
+
+    handleSelectCategory(categoryId) {
+        if (this.state.categoryId !== categoryId) {
+            this.setState({
+                currentPage: 1
+            });
+        }
+        this.setState({
+            categoryId: categoryId,
+            searchText: ''
         }, function () {
             this.reloadProductList();
         });
@@ -67,25 +85,38 @@ class ProductList extends Component {
             },
             session: this.state.sessionID
         };
-        let filterGroups = {
-            0: {
-                filters: {
-                    0: {
-                        field: 'name',
-                        value: '%'+this.state.searchText+'%',
-                        condition_type: 'like'
-                    },
-                    1: {
-                        field: 'sku',
-                        value: '%'+this.state.searchText+'%',
-                        condition_type: 'like'
+
+        if (this.state.searchText) {
+            requestData.searchCriteria.filter_groups = {
+                0: {
+                    filters: {
+                        0: {
+                            field: 'name',
+                            value: '%'+this.state.searchText+'%',
+                            condition_type: 'like'
+                        },
+                        1: {
+                            field: 'sku',
+                            value: '%'+this.state.searchText+'%',
+                            condition_type: 'like'
+                        }
                     }
                 }
             }
-        };
+        }
 
-        if (this.state.searchText) {
-            requestData.searchCriteria.filter_groups = filterGroups;
+        if (this.state.categoryId) {
+            requestData.searchCriteria.filter_groups = {
+                0: {
+                    filters: {
+                        0: {
+                            field: 'category_id',
+                            value: this.state.categoryId,
+                            condition_type: 'eq'
+                        }
+                    }
+                }
+            };
         }
 
         this.setState({
@@ -126,7 +157,8 @@ class ProductList extends Component {
         return (
             <div id="block-product-list" data-bind="scope:'product-list'">
                 <div className="col-sm-8 col-left" id="product-list-wrapper">
-                    <CatalogHeader onSearch={this.handleSearch}/>
+                    <CatalogHeader onSearch={this.handleSearch}
+                                   handleSelectCategory={this.handleSelectCategory}/>
                     {
                         this.state.loading ?
                             <div className="col-sm-8 col-left wrap-list-product" id='product-list-overlay' style={{opacity: 1, backgroundColor: '#fff', position: 'fixed', display: 'block', zIndex: 99999}}>
@@ -140,7 +172,7 @@ class ProductList extends Component {
                                             <div className="wrap-list-product scroll-grid">
                                                 <div className="col-md-12">
                                                     {
-                                                        this.state.productList ?
+                                                        this.state.productList.total_count > 0?
                                                             <div className="row">
                                                                 {
                                                                     this.state.productList.items.map(product => <ProductItem product={product} key={product.id}/>)

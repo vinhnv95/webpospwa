@@ -1,15 +1,31 @@
 import React, {Component} from 'react';
 import './CatalogHeader.css';
+import Category from "./Category/Category";
 
 class CatalogHeader extends Component {
     constructor(props) {
         super(props);
-        this.state
+        this.state = {
+            showCategoryList: false
+        };
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
+        this.showCategories = this.showCategories.bind(this);
+        this.handleSelectCategory = this.handleSelectCategory.bind(this);
     }
 
     handleChangeSearch(event) {
         this.props.onSearch(event.target.value);
+    }
+
+    handleSelectCategory(categoryId) {
+        this.props.handleSelectCategory(categoryId);
+    }
+
+    showCategories() {
+        this.setState({
+            showCategoryList: !this.state.showCategoryList
+        });
+        this.props.handleSelectCategory(null);
     }
 
     render() {
@@ -34,13 +50,19 @@ class CatalogHeader extends Component {
                         </div>
                         <button type="submit" className="btn btn-default">Search</button>
                     </div>
-                    <div className="catalog-header">
+                    <div className={ "catalog-header" + (this.state.showCategoryList ? "":" collapsed") }
+                         data-toggle="collapse"
+                         data-target="#all-categories"
+                         aria-expanded={this.state.showCategoryList ? "true":"false"}
+                         onClick={this.showCategories}>
                         <span className="icon-iconPOS-categories"></span>
                         <span className="title title-header-page">All Categories</span>
                         <span className="icon-iconPOS-dropdown"></span>
                     </div>
-
                 </nav>
+                {
+                    this.state.showCategoryList ? <Category handleSelectCategory={this.handleSelectCategory}/> : ''
+                }
             </header>
         );
     }

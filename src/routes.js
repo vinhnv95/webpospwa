@@ -1,9 +1,9 @@
 import React from 'react';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import App from './App';
-import FirstPage from './FirstPage/FirstPage';
-import Login from './Login/Login';
-import Checkout from './Checkout/Checkout';
+import FirstPage from './pages/FirstPage/FirstPage';
+import Login from './pages/Login/Login';
+import Checkout from './pages/Checkout/Checkout';
 
 const routes = (
     <HashRouter>

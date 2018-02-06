@@ -2,11 +2,12 @@ import React, {Component} from "react";
 import Menu from "../Menu/Menu";
 import { Redirect } from 'react-router-dom';
 import './Layout.css';
-import '../resources/css/style.css';
-import '../resources/css/bootstrap/bootstrap.css';
-import '../resources/css/general.css';
-import '../resources/css/webpos.css';
-import '../resources/css/responsive.css';
+import '../../resources/css/style.css';
+import '../../resources/css/bootstrap/bootstrap.css';
+import '../../resources/css/bootstrap/bootstrap-theme.css';
+import '../../resources/css/general.css';
+import '../../resources/css/webpos.css';
+import '../../resources/css/responsive.css';
 
 export default class Layout extends Component {
     constructor(props) {
@@ -17,7 +18,6 @@ export default class Layout extends Component {
         };
         this.openMenu = this.openMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
-        console.log(window.screen.orientation);
     }
 
     openMenu() {

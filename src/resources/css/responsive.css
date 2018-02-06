@@ -595,6 +595,9 @@
 @media (max-width: 1024px){
     .ms-webpos .main-content .final-price {font-size: 100%;}
     .ms-webpos .main-content .regular-price {font-size: 100%;margin-left:10px}
+    #block-product-list .product-item {
+        height: 150px;
+    }
 
 }
 @media (min-width: 1368px) and (max-width: 1599px){
@@ -606,6 +609,10 @@
     .col-sm-8 {
         width: 66.66666667%;
     }
+    #block-product-list .product-item {
+        height: 100px;
+    }
+
     #block-product-list .product-img {
         float: left;
         width: 25%;
