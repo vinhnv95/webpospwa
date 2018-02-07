@@ -39,6 +39,7 @@ class CatalogHeader extends Component {
                                    placeholder="Enter terms to search"
                                    className="form-control search-header"
                                    id="search-header-product"
+                                   ref="searchHeaderProduct"
                                    onKeyPress={event => {
                                        if (event.key === 'Enter') {
                                            this.handleChangeSearch(event)

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import './ProductList.css';
 import axios from "axios/index";
 import ProductItem from "./ProductItem/ProductItem";
@@ -34,6 +35,7 @@ class ProductList extends Component {
                 currentPage: 1
             });
         }
+        this.refs.catalogHeader.state.showCategoryList = false;
         this.setState({
             categoryId: null,
             searchText: searchText
@@ -50,6 +52,7 @@ class ProductList extends Component {
                 currentPage: 1
             });
         }
+        this.refs.catalogHeader.refs.searchHeaderProduct.value = '';
         this.setState({
             categoryId: categoryId,
             searchText: ''
@@ -92,12 +95,12 @@ class ProductList extends Component {
                     filters: {
                         0: {
                             field: 'name',
-                            value: '%'+this.state.searchText+'%',
+                            value: '%' + this.state.searchText + '%',
                             condition_type: 'like'
                         },
                         1: {
                             field: 'sku',
-                            value: '%'+this.state.searchText+'%',
+                            value: '%' + this.state.searchText + '%',
                             condition_type: 'like'
                         }
                     }
@@ -133,12 +136,12 @@ class ProductList extends Component {
         }
         axios.get(url, {
             params: requestData,
-            paramsSerializer: function(params) {
+            paramsSerializer: function (params) {
                 return qs.stringify(params, {arrayFormat: 'repeat'})
             },
         })
             .then(response => {
-                localStorage.setItem('productList', JSON.stringify(response.data) );
+                localStorage.setItem('productList', JSON.stringify(response.data));
                 this.setState({
                     productList: response.data,
                     loading: false
@@ -158,10 +161,17 @@ class ProductList extends Component {
             <div id="block-product-list" data-bind="scope:'product-list'">
                 <div className="col-sm-8 col-left" id="product-list-wrapper">
                     <CatalogHeader onSearch={this.handleSearch}
-                                   handleSelectCategory={this.handleSelectCategory}/>
+                                   handleSelectCategory={this.handleSelectCategory}
+                                   ref='catalogHeader'/>
                     {
                         this.state.loading ?
-                            <div className="col-sm-8 col-left wrap-list-product" id='product-list-overlay' style={{opacity: 1, backgroundColor: '#fff', position: 'fixed', display: 'block', zIndex: 99999}}>
+                            <div className="col-sm-8 col-left wrap-list-product" id='product-list-overlay' style={{
+                                opacity: 1,
+                                backgroundColor: '#fff',
+                                position: 'fixed',
+                                display: 'block',
+                                zIndex: 99999
+                            }}>
                                 <span className="product-loader"></span>
                             </div>
                             :
@@ -169,13 +179,16 @@ class ProductList extends Component {
                                 <main className="main-content">
                                     <div id="block-product-list">
                                         <div className="grid-data">
-                                            <div className="wrap-list-product scroll-grid">
+                                            <div className="wrap-list-product scroll-grid"
+                                                 style={this.refs.catalogHeader.state.showCategoryList ? {height: 'calc(100vh - 288px)'} : {}}>
                                                 <div className="col-md-12">
                                                     {
-                                                        this.state.productList.total_count > 0?
+                                                        this.state.productList.total_count > 0 ?
                                                             <div className="row">
                                                                 {
-                                                                    this.state.productList.items.map(product => <ProductItem product={product} key={product.id}/>)
+                                                                    this.state.productList.items.map(product =>
+                                                                        <ProductItem product={product}
+                                                                                     key={product.id}/>)
                                                                 }
                                                             </div>
                                                             :
