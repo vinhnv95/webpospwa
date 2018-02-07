@@ -3,6 +3,7 @@ import './Menu.css';
 import axios from "axios/index";
 import {Redirect} from 'react-router-dom';
 import Loader from "../Loader/Loader";
+import Group from "./Group/Group";
 
 class Menu extends Component {
     constructor(props) {
@@ -11,7 +12,20 @@ class Menu extends Component {
             sessionID: localStorage.getItem('sessionID'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
-            loading: false
+            loading: false,
+            menuList: [
+                {
+                    id: 'order',
+                    title: 'Orders',
+                    elems: [
+                        {
+                            id: 'checkout',
+                            title: 'Checkout'
+                        },
+
+                    ]
+                }
+            ],
         };
         this.logout = this.logout.bind(this);
     }
@@ -54,10 +68,13 @@ class Menu extends Component {
                             <h3 className="admin-add">Store Address</h3>
                             <div className="logout-box">
                                 <a className="logout-link" onClick={this.logout}>
-                                    <span className="icon-iconPOS-logout"></span>Logout
+                                    <span className="icon-iconPOS-logout"/>Logout
                                 </a>
                             </div>
                         </div>
+                        {
+                            this.state.menuList.map(group => <Group group={group}/>)
+                        }
                     </nav>
                     <div id="c-mask"
                          className={"c-mask" + (this.props.isActive ? " is-active" : '')}

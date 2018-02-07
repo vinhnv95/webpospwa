@@ -484,12 +484,12 @@ div.egcSwatch-arrow {
 .images-for-slider{margin-bottom:12px}
 
 
-.actions-customer .icon-iconPOS-order-history,
+.actions-customer .icon-iconPOS-orders-history,
 .actions-customer .icon-iconPOS-checkout{
     cursor: pointer;
 }
 
-.actions-customer .icon-iconPOS-order-history{
+.actions-customer .icon-iconPOS-orders-history{
     margin-top: 10px;
     margin-right: 18px;
     margin-bottom: 13px;
@@ -523,7 +523,7 @@ div.egcSwatch-arrow {
     border-bottom: 1px #ccc solid;
 }
 
-#webpos_shopping_cart .icon-iconPOS-synchronize{
+#webpos_shopping_cart .icon-iconPOS-synchronization{
     position: absolute;
     right: 180px;
     top: 15px;

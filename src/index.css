@@ -64,13 +64,13 @@
 .icon-iconPOS-customer-sale:before{content:"\e919"}
 .icon-iconPOS-detail .path1:before{content:"\e91a";color:#b0bec5}
 .icon-iconPOS-detail .path2:before{content:"\e91b";margin-left:-1em;color:#00a679}
-.icon-iconPOS-inventory:before{content:"\e91c"}
-.icon-iconPOS-on-hold-order:before{content:"\e91d"}
-.icon-iconPOS-order-history:before{content:"\e91e"}
+.icon-iconPOS-manage-stock:before{content:"\e91c"}
+.icon-iconPOS-on-hold-orders:before{content:"\e91d"}
+.icon-iconPOS-orders-history:before{content:"\e91e"}
 .icon-iconPOS-out-of-stock:before{content:"\e91f"}
-.icon-iconPOS-setting:before{content:"\e920"}
+.icon-iconPOS-general:before{content:"\e920"}
 .icon-iconPOS-shift:before{content:"\e921"}
-.icon-iconPOS-synchronize:before{content:"\e922"}
+.icon-iconPOS-synchronization:before{content:"\e922"}
 .icon-iconPOS-categories:before{content:"\e923"}
 .icon-iconPOS-change-customer:before{content:"\e924"}
 .icon-iconPOS-checkout:before{content:"\e925"}
