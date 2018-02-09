@@ -73,7 +73,7 @@ class Menu extends Component {
                             </div>
                         </div>
                         {
-                            this.state.menuList.map(group => <Group group={group}/>)
+                            this.state.menuList.map(group => <Group group={group} key={group.id}/>)
                         }
                     </nav>
                     <div id="c-mask"

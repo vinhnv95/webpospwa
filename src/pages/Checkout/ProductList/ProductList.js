@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import './ProductList.css';
 import axios from "axios/index";
 import ProductItem from "./ProductItem/ProductItem";
 import CatalogHeader from "./CatalogHeader/CatalogHeader";
 import CatalogFooter from "./CatalogFooter/CatalogFooter";
+import db from '../../../model/db';
 
 class ProductList extends Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class ProductList extends Component {
     }
 
     componentWillMount() {
-        this.reloadProductList(1);
+        this.reloadProductList();
     }
 
     handleSearch(searchText) {
@@ -142,6 +142,9 @@ class ProductList extends Component {
         })
             .then(response => {
                 localStorage.setItem('productList', JSON.stringify(response.data));
+                response.data.items.map(function (item) {
+                    db.table('product').add(item);
+                });
                 this.setState({
                     productList: response.data,
                     loading: false

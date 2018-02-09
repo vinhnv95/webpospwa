@@ -8,7 +8,7 @@ class Group extends Component {
             <ul className="c-menu__items">
                 <li className="title" id={'group_' + this.props.group.id}>{this.props.group.title}</li>
                 {
-                    this.props.group.elems.map(item => <MenuItem item={item}/>)
+                    this.props.group.elems.map(item => <MenuItem item={item} key={item.id}/>)
                 }
             </ul>
         );
