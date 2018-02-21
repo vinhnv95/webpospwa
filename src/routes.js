@@ -4,6 +4,7 @@ import App from './App';
 import FirstPage from './pages/FirstPage/FirstPage';
 import Login from './pages/Login/Login';
 import Checkout from './pages/Checkout/Checkout';
+import Install from "./pages/Install/Install";
 
 const routes = (
     <HashRouter>
@@ -11,6 +12,7 @@ const routes = (
             <Route exact path='/' component={App}/>
             <Route path='/firstPage' component={FirstPage}/>
             <Route path='/login' component={Login}/>
+            <Route path='/install' component={Install}/>
             <Route path='/checkout' component={Checkout}/>
         </Switch>
     </HashRouter>

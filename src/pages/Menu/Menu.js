@@ -9,7 +9,7 @@ class Menu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: localStorage.getItem('sessionID'),
+            sessionID: sessionStorage.getItem('sessionID'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
             loading: false,
@@ -31,16 +31,17 @@ class Menu extends Component {
     }
 
     logout() {
-        let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/staff/logout?session=' + localStorage.getItem('sessionID');
+        let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/staff/logout?session=' + this.state.sessionID;
         if (window.confirm('Are you sure you want to logout?')){
             this.setState({
                 loading: true
             });
             axios.post(url, {})
                 .then(response => {
-                    localStorage.removeItem('sessionID');
+                    sessionStorage.removeItem('sessionID');
+                    sessionStorage.removeItem('isInstalled');
                     this.setState({
-                        sessionID: localStorage.getItem('sessionID'),
+                        sessionID: sessionStorage.getItem('sessionID'),
                         loading: false
                     });
                 })

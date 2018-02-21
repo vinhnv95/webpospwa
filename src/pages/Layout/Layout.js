@@ -8,16 +8,22 @@ import '../../resources/css/bootstrap/bootstrap-theme.css';
 import '../../resources/css/general.css';
 import '../../resources/css/webpos.css';
 import '../../resources/css/responsive.css';
+import Install from "../Install/Install";
 
 export default class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: localStorage.getItem('sessionID'),
+            sessionID: sessionStorage.getItem('sessionID'),
             menuIsActive: false
         };
         this.openMenu = this.openMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
+        this.Install = new Install();
+    }
+
+    componentDidMount() {
+        setInterval(this.Install.syncData, 5*60*1000);
     }
 
     openMenu() {

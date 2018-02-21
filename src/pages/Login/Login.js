@@ -13,12 +13,12 @@ class Login extends Component {
 				username: '',
 				password: ''
 			},
-			sessionID: localStorage.getItem('sessionID'),
+			sessionID: sessionStorage.getItem('sessionID'),
 			baseUrl: localStorage.getItem('baseUrl'),
 			corsUrl: localStorage.getItem('corsUrl'),
 			loading: false
 
-		}
+		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,7 +47,7 @@ class Login extends Component {
 		})
 			.then(response => {
 				console.log(response.data);
-				localStorage.setItem('sessionID', response.data);
+				sessionStorage.setItem('sessionID', response.data);
 				this.setState({
 					sessionID: response.data,
 					loading: false
@@ -67,7 +67,7 @@ class Login extends Component {
         //     return <Redirect to='/' />;
         // }
 		if (this.state.sessionID) {
-			return <Redirect to='/checkout' />;
+			return <Redirect to='/install' />;
 		}
 		return (
 			<div>

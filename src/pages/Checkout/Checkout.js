@@ -8,7 +8,7 @@ class Checkout extends Component {
 	constructor(props) {
 		super(props);
         this.state = {
-            sessionID: localStorage.getItem('sessionID'),
+            sessionID: sessionStorage.getItem('sessionID'),
         };
 	}
 

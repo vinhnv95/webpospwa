@@ -10,12 +10,13 @@ class ProductList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: localStorage.getItem('sessionID'),
+            sessionID: sessionStorage.getItem('sessionID'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
             categoryId: null,
             searchText: '',
             currentPage: 1,
+            pageSize: 16,
             loading: false
         };
 
@@ -72,81 +73,117 @@ class ProductList extends Component {
     }
 
     reloadProductList() {
-        let qs = require('qs');
-        let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/productlist/';
-        let requestData = {
-            show_out_stock: 1,
-            searchCriteria: {
-                current_page: this.state.currentPage,
-                page_size: 16,
-                sortOrders: {
-                    1: {
-                        field: 'name',
-                        direction: 'ASC'
-                    }
-                }
-            },
-            session: this.state.sessionID
-        };
-
-        if (this.state.searchText) {
-            requestData.searchCriteria.filter_groups = {
-                0: {
-                    filters: {
-                        0: {
-                            field: 'name',
-                            value: '%' + this.state.searchText + '%',
-                            condition_type: 'like'
-                        },
-                        1: {
-                            field: 'sku',
-                            value: '%' + this.state.searchText + '%',
-                            condition_type: 'like'
-                        }
-                    }
-                }
-            }
-        }
-
-        if (this.state.categoryId) {
-            requestData.searchCriteria.filter_groups = {
-                0: {
-                    filters: {
-                        0: {
-                            field: 'category_id',
-                            value: this.state.categoryId,
-                            condition_type: 'eq'
-                        }
-                    }
-                }
-            };
-        }
+        // let qs = require('qs');
+        // let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/productlist/';
+        // let requestData = {
+        //     show_out_stock: 1,
+        //     searchCriteria: {
+        //         current_page: this.state.currentPage,
+        //         page_size: 16,
+        //         sortOrders: {
+        //             1: {
+        //                 field: 'name',
+        //                 direction: 'ASC'
+        //             }
+        //         }
+        //     },
+        //     session: this.state.sessionID
+        // };
+        //
+        // if (this.state.searchText) {
+        //     requestData.searchCriteria.filter_groups = {
+        //         0: {
+        //             filters: {
+        //                 0: {
+        //                     field: 'name',
+        //                     value: '%' + this.state.searchText + '%',
+        //                     condition_type: 'like'
+        //                 },
+        //                 1: {
+        //                     field: 'sku',
+        //                     value: '%' + this.state.searchText + '%',
+        //                     condition_type: 'like'
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        //
+        // if (this.state.categoryId) {
+        //     requestData.searchCriteria.filter_groups = {
+        //         0: {
+        //             filters: {
+        //                 0: {
+        //                     field: 'category_id',
+        //                     value: this.state.categoryId,
+        //                     condition_type: 'eq'
+        //                 }
+        //             }
+        //         }
+        //     };
+        // }
 
         this.setState({
             loading: true
         });
 
-        if (!navigator.onLine) {
-            this.setState({
-                productList: JSON.parse(localStorage.getItem('productList'))
-            });
-            this.setState({
-                loading: false
-            });
-        }
-        axios.get(url, {
-            params: requestData,
-            paramsSerializer: function (params) {
-                return qs.stringify(params, {arrayFormat: 'repeat'})
-            },
+        // if (!navigator.onLine) {
+        //     this.setState({
+        //         productList: JSON.parse(localStorage.getItem('productList'))
+        //     });
+        //     this.setState({
+        //         loading: false
+        //     });
+        // }
+        // axios.get(url, {
+        //     params: requestData,
+        //     paramsSerializer: function (params) {
+        //         return qs.stringify(params, {arrayFormat: 'repeat'})
+        //     },
+        // })
+        //     .then(response => {
+        //         localStorage.setItem('productList', JSON.stringify(response.data));
+        //         response.data.items.map(function (item) {
+        //             if (db.table('product').get(item.id)) {
+        //                 db.table('product').update(item.id, item);
+        //             } else {
+        //                 db.table('product').add(item);
+        //             }
+        //         });
+        //         this.setState({
+        //             productList: response.data,
+        //             loading: false
+        //         });
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //         this.setState({
+        //             loading: false
+        //         });
+        //     })
+        let offset = (this.state.currentPage - 1)*this.state.pageSize;
+        let searchText = this.state.searchText;
+        let categoryId = this.state.categoryId;
+        db.product.filter(function (item) {
+            if (item.name.indexOf(searchText) > -1 || item.sku.indexOf(searchText) > -1) {
+                if (categoryId) {
+                    if (item.category_ids && item.category_ids.indexOf('\''+categoryId+'\'') > -1){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
         })
-            .then(response => {
-                localStorage.setItem('productList', JSON.stringify(response.data));
-                response.data.items.map(function (item) {
-                    db.table('product').add(item);
-                });
+            .offset(offset)
+            .limit(16)
+            .toArray()
+            .then(results => {
+                console.log(results);
                 this.setState({
-                    productList: response.data,
+                    productList: results,
                     loading: false
                 });
             })
@@ -156,7 +193,6 @@ class ProductList extends Component {
                     loading: false
                 });
             })
-
     }
 
     render() {
@@ -186,10 +222,10 @@ class ProductList extends Component {
                                                  style={this.refs.catalogHeader.state.showCategoryList ? {height: 'calc(100vh - 288px)'} : {}}>
                                                 <div className="col-md-12">
                                                     {
-                                                        this.state.productList.total_count > 0 ?
+                                                        this.state.productList ?
                                                             <div className="row">
                                                                 {
-                                                                    this.state.productList.items.map(product =>
+                                                                    this.state.productList.map(product =>
                                                                         <ProductItem product={product}
                                                                                      key={product.id}/>)
                                                                 }
@@ -205,9 +241,9 @@ class ProductList extends Component {
                                     </div>
                                 </main>
                                 <CatalogFooter onChangePage={this.handleChangePage}
-                                               currentPage={this.state.productList.search_criteria.current_page}
-                                               pageSize={this.state.productList.search_criteria.page_size}
-                                               totalCount={this.state.productList.total_count}
+                                               currentPage={this.state.currentPage}
+                                               pageSize={this.state.pageSize}
+                                               totalCount={localStorage.getItem('totalProduct')}
                                 />
                             </div>
                     }
