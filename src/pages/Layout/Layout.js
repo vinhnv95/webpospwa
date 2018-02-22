@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Menu from "../Menu/Menu";
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import './Layout.css';
 import '../../resources/css/style.css';
 import '../../resources/css/bootstrap/bootstrap.css';
@@ -9,12 +9,13 @@ import '../../resources/css/general.css';
 import '../../resources/css/webpos.css';
 import '../../resources/css/responsive.css';
 import Install from "../Install/Install";
+import cookie from 'react-cookies';
 
 export default class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: sessionStorage.getItem('sessionID'),
+            sessionID: cookie.load('sessionID'),
             menuIsActive: false
         };
         this.openMenu = this.openMenu.bind(this);
@@ -23,7 +24,7 @@ export default class Layout extends Component {
     }
 
     componentDidMount() {
-        setInterval(this.Install.syncData, 5*60*1000);
+        setInterval(this.Install.syncData, 8 * 60 * 1000);
     }
 
     openMenu() {
@@ -42,7 +43,8 @@ export default class Layout extends Component {
         if (this.state.sessionID) {
             return (
                 <div className="ms-webpos">
-                    <div id="o-wrapper" className={"o-wrapper wrap-checkout-page" + (this.state.menuIsActive ? ' has-push-left': '')}>
+                    <div id="o-wrapper"
+                         className={"o-wrapper wrap-checkout-page" + (this.state.menuIsActive ? ' has-push-left' : '')}>
                         <button id="c-button--push-left" className="c-button ui-btn ui-shadow ui-corner-all"
                                 style={{display: 'inline-block'}}
                                 onClick={this.openMenu}>
@@ -58,7 +60,7 @@ export default class Layout extends Component {
                 </div>
             );
         } else {
-            return <Redirect to='/' />;
+            return <Redirect to='/'/>;
         }
     }
 }

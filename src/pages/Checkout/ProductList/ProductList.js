@@ -5,12 +5,13 @@ import ProductItem from "./ProductItem/ProductItem";
 import CatalogHeader from "./CatalogHeader/CatalogHeader";
 import CatalogFooter from "./CatalogFooter/CatalogFooter";
 import db from '../../../model/db';
+import cookie from 'react-cookies';
 
 class ProductList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: sessionStorage.getItem('sessionID'),
+            sessionID: cookie.load('sessionID'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
             categoryId: null,
@@ -181,7 +182,6 @@ class ProductList extends Component {
             .limit(16)
             .toArray()
             .then(results => {
-                console.log(results);
                 this.setState({
                     productList: results,
                     loading: false

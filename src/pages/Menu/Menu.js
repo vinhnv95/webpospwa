@@ -4,12 +4,13 @@ import axios from "axios/index";
 import {Redirect} from 'react-router-dom';
 import Loader from "../Loader/Loader";
 import Group from "./Group/Group";
+import cookie from 'react-cookies';
 
 class Menu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: sessionStorage.getItem('sessionID'),
+            sessionID: cookie.load('sessionID'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
             loading: false,
@@ -32,16 +33,16 @@ class Menu extends Component {
 
     logout() {
         let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/staff/logout?session=' + this.state.sessionID;
-        if (window.confirm('Are you sure you want to logout?')){
+        if (window.confirm('Are you sure you want to logout?')) {
             this.setState({
                 loading: true
             });
             axios.post(url, {})
                 .then(response => {
-                    sessionStorage.removeItem('sessionID');
-                    sessionStorage.removeItem('isInstalled');
+                    cookie.remove('sessionID', {path: '/'});
+                    cookie.remove('isInstalled', {path: '/'});
                     this.setState({
-                        sessionID: sessionStorage.getItem('sessionID'),
+                        sessionID: cookie.load('sessionID'),
                         loading: false
                     });
                 })
@@ -59,7 +60,7 @@ class Menu extends Component {
             return (
                 <div>
                     {
-                        this.state.loading? <Loader/> : ''
+                        this.state.loading ? <Loader/> : ''
                     }
                     <nav id="c-menu--push-left"
                          className={"c-menu c-menu--push-left" + (this.props.isActive ? " is-active" : '')}>

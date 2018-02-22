@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import './Install.css';
 import '../../resources/css/style.css';
 import '../../resources/css/bootstrap/bootstrap.css';
@@ -11,13 +11,14 @@ import '../../resources/css/login.css';
 import '../../resources/css/synchronization.css';
 import db from "../../model/db";
 import axios from "axios/index";
+import cookie from 'react-cookies';
 
 export default class Install extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: sessionStorage.getItem('sessionID'),
-            isInstalled: sessionStorage.getItem('isInstalled'),
+            sessionID: cookie.load('sessionID'),
+            isInstalled: cookie.load('isInstalled'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
             percent: 0,
@@ -60,7 +61,7 @@ export default class Install extends Component {
                     percent: 100
                 });
             });
-        sessionStorage.setItem('isInstalled', '1');
+        cookie.save('isInstalled', '1', {path: '/'});
     }
 
     async loadProductList() {
@@ -79,11 +80,11 @@ export default class Install extends Component {
             session: this.state.sessionID
         };
 
-        if (!navigator.onLine) {
-            this.setState({
-                productList: JSON.parse(localStorage.getItem('productList'))
-            });
-        }
+        // if (!navigator.onLine) {
+        //     this.setState({
+        //         productList: JSON.parse(localStorage.getItem('productList'))
+        //     });
+        // }
         this.setState({
             message: 'Product'
         });
@@ -117,14 +118,14 @@ export default class Install extends Component {
             message: 'Category'
         });
 
-        if (!navigator.onLine) {
-            this.setState({
-                categoryList: JSON.parse(localStorage.getItem('categoryList'))
-            });
-            this.setState({
-                percent: 100
-            });
-        }
+        // if (!navigator.onLine) {
+        //     this.setState({
+        //         categoryList: JSON.parse(localStorage.getItem('categoryList'))
+        //     });
+        //     this.setState({
+        //         percent: 100
+        //     });
+        // }
         let response = await axios.get(url, {
             params: requestData,
             paramsSerializer: function (params) {
@@ -146,7 +147,7 @@ export default class Install extends Component {
                             <div className="wrap-process">
                                 <div className="myProgress first-rates-myProgress">
                                     <div className="label-percent first-rates-label-percent">{this.state.percent}%</div>
-                                    <div className="myBar first-rates-myBar" style={{width: this.state.percent+'%'}}>
+                                    <div className="myBar first-rates-myBar" style={{width: this.state.percent + '%'}}>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +166,7 @@ export default class Install extends Component {
                 </div>
             );
         } else {
-            return <Redirect to='/' />;
+            return <Redirect to='/'/>;
         }
     }
 }
