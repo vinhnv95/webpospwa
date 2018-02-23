@@ -27,6 +27,7 @@ export default class Install extends Component {
         this.syncData = this.syncData.bind(this);
         this.loadProductList = this.loadProductList.bind(this);
         this.loadCategory = this.loadCategory.bind(this);
+        this.loadConfiguration = this.loadConfiguration.bind(this);
     }
 
     componentDidMount() {
@@ -34,6 +35,13 @@ export default class Install extends Component {
     }
 
     syncData() {
+        if (!navigator.onLine) {
+            console.log('offline');
+            return;
+        }
+        if (this.state.isInstalled) {
+            return;
+        }
         this.loadProductList()
             .then(response => {
                 localStorage.setItem('totalProduct', response.data.total_count);
@@ -58,10 +66,28 @@ export default class Install extends Component {
                     });
                 });
                 this.setState({
+                    percent: 80
+                });
+                return this.loadConfiguration();
+            })
+            .then(response => {
+                db.core_config_data.clear();
+                response.data.items.map(function (item) {
+                    // db.core_config_data.update(item.path, item).then(function (updated) {
+                    //     if (!updated) {
+                    // //         db.core_config_data.add(item);
+                    // //         console.log(updated);
+                    //     }
+                    // });
+                    db.core_config_data.add(item);
+                });
+                this.setState({
                     percent: 100
                 });
             });
-        cookie.save('isInstalled', '1', {path: '/'});
+        let expires = new Date();
+        expires.setDate(expires.getDate() + 1);
+        cookie.save('isInstalled', '1', {path: '/', expires});
     }
 
     async loadProductList() {
@@ -132,6 +158,15 @@ export default class Install extends Component {
                 return qs.stringify(params, {arrayFormat: 'repeat'})
             },
         });
+        return response;
+    }
+
+    async loadConfiguration() {
+        let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/configurations?session=' + this.state.sessionID;
+        this.setState({
+            message: 'Configuration'
+        });
+        let response = await axios.get(url, {});
         return response;
     }
 

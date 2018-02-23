@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom';
 import Loader from "../Loader/Loader";
 import Group from "./Group/Group";
 import cookie from 'react-cookies';
+import db from "../../model/db";
 
 class Menu extends Component {
     constructor(props) {
@@ -14,6 +15,8 @@ class Menu extends Component {
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
             loading: false,
+            staffName: '',
+            locationName: '',
             menuList: [
                 {
                     id: 'order',
@@ -28,6 +31,12 @@ class Menu extends Component {
                 }
             ],
         };
+        db.core_config_data.get('staffName').then(res => {
+            this.state.staffName = res.value;
+        });
+        db.core_config_data.get('location_name').then(res => {
+            this.state.locationName = res.value;
+        });
         this.logout = this.logout.bind(this);
     }
 
@@ -66,8 +75,8 @@ class Menu extends Component {
                          className={"c-menu c-menu--push-left" + (this.props.isActive ? " is-active" : '')}>
                         <button className="c-menu__close">&larr;Close Menu</button>
                         <div className="admin-account">
-                            <h2 className="admin-name">Admin Admin</h2>
-                            <h3 className="admin-add">Store Address</h3>
+                            <h2 className="admin-name">{this.state.staffName}</h2>
+                            <h3 className="admin-add">{this.state.locationName}</h3>
                             <div className="logout-box">
                                 <a className="logout-link" onClick={this.logout}>
                                     <span className="icon-iconPOS-logout"/>Logout

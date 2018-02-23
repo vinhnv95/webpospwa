@@ -47,8 +47,10 @@ class Login extends Component {
             staff: this.state.staff
         })
             .then(response => {
+                let expires = new Date();
+                expires.setDate(expires.getDate() + 1);
                 console.log(response.data);
-                cookie.save('sessionID', response.data, {path: '/'});
+                cookie.save('sessionID', response.data, {path: '/', expires});
                 this.setState({
                     sessionID: response.data,
                     loading: false

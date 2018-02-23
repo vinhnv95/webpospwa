@@ -8,8 +8,8 @@ import '../../resources/css/bootstrap/bootstrap-theme.css';
 import '../../resources/css/general.css';
 import '../../resources/css/webpos.css';
 import '../../resources/css/responsive.css';
-import Install from "../Install/Install";
 import cookie from 'react-cookies';
+import {syncData} from '../../helpers/SynchronizationHelper';
 
 export default class Layout extends Component {
     constructor(props) {
@@ -20,11 +20,10 @@ export default class Layout extends Component {
         };
         this.openMenu = this.openMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
-        this.Install = new Install();
     }
 
     componentDidMount() {
-        setInterval(this.Install.syncData, 8 * 60 * 1000);
+        setInterval(syncData, 10 * 60 * 1000);
     }
 
     openMenu() {

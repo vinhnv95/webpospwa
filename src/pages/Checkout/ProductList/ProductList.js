@@ -180,7 +180,7 @@ class ProductList extends Component {
         })
             .offset(offset)
             .limit(16)
-            .toArray()
+            .sortBy('name')
             .then(results => {
                 this.setState({
                     productList: results,
