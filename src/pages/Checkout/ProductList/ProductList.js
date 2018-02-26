@@ -163,10 +163,10 @@ class ProductList extends Component {
         //         });
         //     })
         let offset = (this.state.currentPage - 1)*this.state.pageSize;
-        let searchText = this.state.searchText;
+        let searchText = this.state.searchText.toLowerCase();
         let categoryId = this.state.categoryId;
         db.product.filter(function (item) {
-            if (item.name.indexOf(searchText) > -1 || item.sku.indexOf(searchText) > -1) {
+            if (item.name.toLowerCase().indexOf(searchText) > -1 || item.sku.toLowerCase().indexOf(searchText) > -1) {
                 if (categoryId) {
                     if (item.category_ids && item.category_ids.indexOf('\''+categoryId+'\'') > -1){
                         return true;
