@@ -23,7 +23,8 @@ export default class Layout extends Component {
     }
 
     componentDidMount() {
-        setInterval(syncData, 10 * 60 * 1000);
+        syncData();
+        setInterval(syncData, 8 * 60 * 1000);
     }
 
     openMenu() {

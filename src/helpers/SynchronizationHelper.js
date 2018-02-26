@@ -1,17 +1,15 @@
-// let db = require('../model/db');
 import db from '../model/db';
+import cookie from 'react-cookies';
+import axios from 'axios';
 
-let cookie = require('react-cookies');
 let qs = require('qs');
 
-let axios = require('axios');
 let corsUrl = localStorage.getItem('corsUrl');
 let baseURL = localStorage.getItem('baseUrl');
 let sessionID = cookie.load('sessionID');
 
 export function syncData() {
     console.log('sync data');
-    console.log(sessionID);
     loadProductList();
     loadCategory();
     loadConfiguration();
@@ -41,11 +39,7 @@ export function loadProductList() {
         .then(response => {
             localStorage.setItem('totalProduct', response.data.total_count);
             response.data.items.map(function (item) {
-                db.product.update(item.id, item).then(function (updated) {
-                    if (!updated) {
-                        db.product.add(item);
-                    }
-                });
+                db.product.put(item);
             });
             console.log('complete sync product');
         })
@@ -78,12 +72,7 @@ export function loadCategory() {
     })
         .then(response => {
             response.data.items.map(function (item) {
-                db.category.update(item.id, item).then(function (updated) {
-                    if (!updated) {
-                        // console.log('add category' + item.id);
-                        db.category.add(item);
-                    }
-                });
+                db.category.put(item);
             });
             console.log('complete sync category');
         })
@@ -96,15 +85,8 @@ export function loadConfiguration() {
     let url = corsUrl + baseURL + '/rest/default/V1/webpos/configurations?session=' + sessionID;
     axios.get(url, {})
         .then(response => {
-            db.core_config_data.clear();
             response.data.items.map(function (item) {
-                // db.core_config_data.update(item.path, item).then(function (updated) {
-                //     if (!updated) {
-                // //         db.core_config_data.add(item);
-                // //         console.log(updated);
-                //     }
-                // });
-                db.core_config_data.add(item);
+                db.core_config_data.put(item);
             });
             console.log('complete sync config');
 

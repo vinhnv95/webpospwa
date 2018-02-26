@@ -21,7 +21,8 @@ export default class Install extends Component {
             isInstalled: cookie.load('isInstalled'),
             baseURL: localStorage.getItem('baseUrl'),
             corsUrl: localStorage.getItem('corsUrl'),
-            percent: 0,
+            count: 0,
+            total: 3,
             message: ''
         };
         this.syncData = this.syncData.bind(this);
@@ -42,55 +43,15 @@ export default class Install extends Component {
         if (this.state.isInstalled) {
             return;
         }
-        this.loadProductList()
-            .then(response => {
-                localStorage.setItem('totalProduct', response.data.total_count);
-                response.data.items.map(function (item) {
-                    db.product.update(item.id, item).then(function (updated) {
-                        if (!updated) {
-                            db.product.add(item);
-                        }
-                    });
-                });
-                this.setState({
-                    percent: 50
-                });
-                return this.loadCategory();
-            })
-            .then(response => {
-                response.data.items.map(function (item) {
-                    db.category.update(item.id, item).then(function (updated) {
-                        if (!updated) {
-                            db.category.add(item);
-                        }
-                    });
-                });
-                this.setState({
-                    percent: 80
-                });
-                return this.loadConfiguration();
-            })
-            .then(response => {
-                db.core_config_data.clear();
-                response.data.items.map(function (item) {
-                    // db.core_config_data.update(item.path, item).then(function (updated) {
-                    //     if (!updated) {
-                    // //         db.core_config_data.add(item);
-                    // //         console.log(updated);
-                    //     }
-                    // });
-                    db.core_config_data.add(item);
-                });
-                this.setState({
-                    percent: 100
-                });
-            });
+        this.loadProductList();
+        this.loadCategory();
+        this.loadConfiguration();
         let expires = new Date();
         expires.setDate(expires.getDate() + 1);
         cookie.save('isInstalled', '1', {path: '/', expires});
     }
 
-    async loadProductList() {
+    loadProductList() {
         let qs = require('qs');
         let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/productlist/';
         let requestData = {
@@ -106,25 +67,25 @@ export default class Install extends Component {
             session: this.state.sessionID
         };
 
-        // if (!navigator.onLine) {
-        //     this.setState({
-        //         productList: JSON.parse(localStorage.getItem('productList'))
-        //     });
-        // }
-        this.setState({
-            message: 'Product'
-        });
-        let response = await axios.get(url, {
+        axios.get(url, {
             params: requestData,
             paramsSerializer: function (params) {
                 return qs.stringify(params, {arrayFormat: 'repeat'})
             },
-        });
-
-        return response;
+        })
+            .then(response => {
+                localStorage.setItem('totalProduct', response.data.total_count);
+                response.data.items.map(function (item) {
+                    db.product.put(item);
+                });
+                this.setState({
+                    count: this.state.count+1,
+                    message: 'Complete Sync Product'
+                });
+            });
     }
 
-    async loadCategory() {
+    loadCategory() {
         let qs = require('qs');
         let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/categories/';
         let requestData = {
@@ -140,34 +101,35 @@ export default class Install extends Component {
             session: this.state.sessionID
         };
 
-        this.setState({
-            message: 'Category'
-        });
-
-        // if (!navigator.onLine) {
-        //     this.setState({
-        //         categoryList: JSON.parse(localStorage.getItem('categoryList'))
-        //     });
-        //     this.setState({
-        //         percent: 100
-        //     });
-        // }
-        let response = await axios.get(url, {
+        axios.get(url, {
             params: requestData,
             paramsSerializer: function (params) {
                 return qs.stringify(params, {arrayFormat: 'repeat'})
             },
-        });
-        return response;
+        })
+            .then(response => {
+                response.data.items.map(function (item) {
+                    db.category.put(item);
+                });
+                this.setState({
+                    count: this.state.count+1,
+                    message: 'Complete Sync Category'
+                });
+            });
     }
 
-    async loadConfiguration() {
+    loadConfiguration() {
         let url = this.state.corsUrl + this.state.baseURL + '/rest/default/V1/webpos/configurations?session=' + this.state.sessionID;
-        this.setState({
-            message: 'Configuration'
-        });
-        let response = await axios.get(url, {});
-        return response;
+        axios.get(url, {})
+            .then(response => {
+                response.data.items.map(function (item) {
+                    db.core_config_data.put(item);
+                });
+                this.setState({
+                    count: this.state.count+1,
+                    message: 'Complete Sync Configuration'
+                });
+            });
     }
 
     render() {
@@ -175,14 +137,16 @@ export default class Install extends Component {
             if (this.state.isInstalled) {
                 return <Redirect to='/checkout'/>;
             }
+            let percent = (this.state.count/this.state.total)*100;
+            percent = Math.round(percent);
             return (
                 <div className="ms-webpos">
                     <div className="first-screen">
                         <div className="process-box">
                             <div className="wrap-process">
                                 <div className="myProgress first-rates-myProgress">
-                                    <div className="label-percent first-rates-label-percent">{this.state.percent}%</div>
-                                    <div className="myBar first-rates-myBar" style={{width: this.state.percent + '%'}}>
+                                    <div className="label-percent first-rates-label-percent">{percent}%</div>
+                                    <div className="myBar first-rates-myBar" style={{width: percent + '%'}}>
                                     </div>
                                 </div>
                             </div>
@@ -190,13 +154,13 @@ export default class Install extends Component {
                         <div className="process-box">
                             <div className="wrap-process-label-message">
                                 <div className="myProgress">
-                                    <div className="label-message">Syncing {this.state.message}</div>
+                                    <div className="label-message">{this.state.message}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {
-                        this.state.percent === 100 ? <Redirect to='/checkout'/> : ''
+                        this.state.count === this.state.total ? <Redirect to='/checkout'/> : ''
                     }
                 </div>
             );
