@@ -46,9 +46,10 @@ export default class Install extends Component {
         this.loadProductList();
         this.loadCategory();
         this.loadConfiguration();
-        let expires = new Date();
-        expires.setDate(expires.getDate() + 1);
-        cookie.save('isInstalled', '1', {path: '/', expires});
+        // let expires = new Date();
+        // expires.setDate(expires.getDate() + 1);
+        // cookie.save('isInstalled', '1', {path: '/', expires});
+        cookie.save('isInstalled', '1', {path: '/'});
     }
 
     loadProductList() {

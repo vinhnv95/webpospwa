@@ -20,9 +20,9 @@ class Login extends Component {
             loading: false
 
         };
-
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     handleInputChange(event) {
@@ -49,8 +49,8 @@ class Login extends Component {
             .then(response => {
                 let expires = new Date();
                 expires.setDate(expires.getDate() + 1);
-                console.log(response.data);
-                cookie.save('sessionID', response.data, {path: '/', expires});
+                cookie.remove('isInstalled');
+                cookie.save('sessionID', response.data, {path: '/'});
                 this.setState({
                     sessionID: response.data,
                     loading: false

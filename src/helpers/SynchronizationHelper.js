@@ -1,6 +1,7 @@
 import db from '../model/db';
 import cookie from 'react-cookies';
 import axios from 'axios';
+import {renewWebposSession} from './cookieHelper';
 
 let qs = require('qs');
 
@@ -13,6 +14,7 @@ export function syncData() {
     loadProductList();
     loadCategory();
     loadConfiguration();
+    renewWebposSession();
 }
 
 export function loadProductList() {
