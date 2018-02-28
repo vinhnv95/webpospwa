@@ -7,17 +7,17 @@ let qs = require('qs');
 
 let corsUrl = localStorage.getItem('corsUrl');
 let baseURL = localStorage.getItem('baseUrl');
-let sessionID = cookie.load('sessionID');
 
 export function syncData() {
     console.log('sync data');
+    renewWebposSession();
+    loadConfiguration();
     loadProductList();
     loadCategory();
-    loadConfiguration();
-    renewWebposSession();
 }
 
 export function loadProductList() {
+    let sessionID = cookie.load('sessionID');
     let url = corsUrl + baseURL + '/rest/default/V1/webpos/productlist/';
     let requestData = {
         show_out_stock: 1,
@@ -52,6 +52,7 @@ export function loadProductList() {
 }
 
 export function loadCategory() {
+    let sessionID = cookie.load('sessionID');
     let url = corsUrl + baseURL + '/rest/default/V1/webpos/categories/';
     let requestData = {
         searchCriteria: {
@@ -84,6 +85,7 @@ export function loadCategory() {
 }
 
 export function loadConfiguration() {
+    let sessionID = cookie.load('sessionID');
     let url = corsUrl + baseURL + '/rest/default/V1/webpos/configurations?session=' + sessionID;
     axios.get(url, {})
         .then(response => {

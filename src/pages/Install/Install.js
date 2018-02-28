@@ -136,7 +136,7 @@ export default class Install extends Component {
     render() {
         if (this.state.sessionID) {
             if (this.state.isInstalled) {
-                return <Redirect to='/checkout'/>;
+                return <Redirect to='/choosePos'/>;
             }
             let percent = (this.state.count/this.state.total)*100;
             percent = Math.round(percent);
@@ -161,7 +161,7 @@ export default class Install extends Component {
                         </div>
                     </div>
                     {
-                        this.state.count === this.state.total ? <Redirect to='/checkout'/> : ''
+                        this.state.count === this.state.total ? <Redirect to='/choosePos'/> : ''
                     }
                 </div>
             );
