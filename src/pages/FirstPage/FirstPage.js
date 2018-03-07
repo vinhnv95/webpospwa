@@ -9,19 +9,12 @@ import {connect} from 'react-redux';
 class FirstPage extends Component {
 	constructor(props) {
 		super(props);
-		// this.state = {
-		// 	baseUrl: localStorage.getItem('baseUrl')
-        // };
 
         autoBind(this);
 	}
 
     handleSubmit(event) {
         event.preventDefault();
-        // localStorage.setItem('baseUrl', event.target.baseUrl.value);
-        // this.setState({
-		// 	baseUrl: event.target.baseUrl.value
-        // });
         this.props.actions.addBaseUrl(event.target.baseUrl.value);
     }
 
