@@ -12,11 +12,10 @@ const LoginForm = (props) => {
 		                        <div className="form-group">
 		                            <label htmlFor="username" className="sr-only">Username</label>
 		                            <input type="text" 
-		                            	name="username" 
+		                            	name="staff[username" 
 		                            	id="username" 
 		                            	className="form-control" 
-		                            	placeholder="Username"
-		                            	onChange={props.handleInputChange} />
+		                            	placeholder="Username"/>
 		                        </div>
 		                        <div className="form-group">
 		                            <label htmlFor="key" className="sr-only">Password</label>
@@ -24,8 +23,7 @@ const LoginForm = (props) => {
 		                            	name="password" 
 		                            	id="password" 
 		                            	className="form-control" 
-		                            	placeholder="Password"
-		                            	onChange={props.handleInputChange} />
+		                            	placeholder="Password"/>
 		                        </div>
 		                        <input type="submit" id="btn-login" className="btn btn-custom btn-lg btn-block" value="Log in" />
 		                    </form>

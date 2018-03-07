@@ -1,27 +1,32 @@
 import React, {Component} from 'react';
 import './FirstPage.css';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
+import autoBind from 'react-autobind';
+import {bindActionCreators} from 'redux';
+import * as FirstPageActions from '../../actions/FirstPage/FirstPageActions';
+import {connect} from 'react-redux';
 
 class FirstPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			baseUrl: localStorage.getItem('baseUrl')
-		};
+		// this.state = {
+		// 	baseUrl: localStorage.getItem('baseUrl')
+        // };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        autoBind(this);
 	}
 
     handleSubmit(event) {
         event.preventDefault();
-        localStorage.setItem('baseUrl', event.target.baseUrl.value);
-        this.setState({
-			baseUrl: event.target.baseUrl.value
-		});
+        // localStorage.setItem('baseUrl', event.target.baseUrl.value);
+        // this.setState({
+		// 	baseUrl: event.target.baseUrl.value
+        // });
+        this.props.actions.addBaseUrl(event.target.baseUrl.value);
     }
 
 	render() {
-		if (this.state.baseUrl) {
+		if (this.props.baseUrl) {
             return <Redirect to='/login' />;
         }
         return (
@@ -53,4 +58,16 @@ class FirstPage extends Component {
 	}
 }
 
-export default FirstPage;
+function mapStateToProps(state) {
+    return {
+        baseUrl: state.firstPageReducer.baseUrl
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(FirstPageActions, dispatch)
+    };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FirstPage));

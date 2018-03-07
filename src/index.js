@@ -7,8 +7,20 @@ import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import routes from './routes';
+import 'rxjs';
+
+import configureStore from './store/configureStore';
+import {Provider} from 'react-redux';
 
 localStorage.setItem('corsUrl', 'https://vinh-cors.herokuapp.com/');
 
-ReactDOM.render(routes, document.getElementById('root'));
+const store = configureStore();
+
+const appRoot = (
+    <Provider store={store}>
+        {routes}
+    </Provider>
+);
+
+ReactDOM.render(appRoot, document.getElementById('root'));
 registerServiceWorker();
