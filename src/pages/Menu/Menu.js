@@ -6,6 +6,7 @@ import Loader from "../Loader/Loader";
 import Group from "./Group/Group";
 import cookie from 'react-cookies';
 import db from "../../model/db";
+import autoBind from 'react-autobind';
 
 class Menu extends Component {
     constructor(props) {
@@ -37,7 +38,7 @@ class Menu extends Component {
         db.core_config_data.get('location_name').then(res => {
             this.state.locationName = res.value;
         });
-        this.logout = this.logout.bind(this);
+        autoBind(this);
     }
 
     logout() {
@@ -47,19 +48,20 @@ class Menu extends Component {
                 loading: true
             });
             axios.post(url, {})
-                .then(response => {
-                    cookie.remove('sessionID', {path: '/'});
-                    cookie.remove('isInstalled', {path: '/'});
-                    this.setState({
-                        sessionID: cookie.load('sessionID'),
-                        loading: false
-                    });
-                })
                 .catch(error => {
+                    console.log(error);
                     this.setState({
                         loading: false
                     });
                     alert('Logout Failed');
+                })
+                .then(response => {
+                    cookie.remove('isInstalled', {path: '/'});                    
+                    cookie.remove('sessionID', {path: '/'});
+                    this.setState({
+                        sessionID: '',
+                        loading: false
+                    });
                 })
         }
     }

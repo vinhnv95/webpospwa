@@ -78,11 +78,6 @@ class ChoosePosLocation extends Component {
                     0: {
                         filters: {
                             0: {
-                                field: 'staff_id',
-                                value: this.state.staffId,
-                                condition_type: 'eq'
-                            },
-                            1: {
                                 field: 'location_id',
                                 value: this.state.locationId,
                                 condition_type: 'eq'
@@ -204,7 +199,8 @@ class ChoosePosLocation extends Component {
                                             <option value="">--- Choose a POS ---</option>
                                             {
                                                 this.state.posList.map((item, key) => <option key={key}
-                                                                                              value={item.pos_id}>{item.pos_name}</option>)
+                                                                                              value={item.pos_id}
+                                                                                              disabled={item.staff_id}>{item.pos_name}</option>)
                                             }
                                         </select>
                                     </div>

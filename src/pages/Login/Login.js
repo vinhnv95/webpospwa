@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import "./Login.css";
-import axios from 'axios';
+// import axios from 'axios';
 import {Redirect, withRouter} from 'react-router-dom';
 import LoginForm from './Component/LoginForm';
 import Loader from "../Loader/Loader";
-import cookie from 'react-cookies';
+// import cookie from 'react-cookies';
 import * as LoginPageActions from '../../actions/Login/LoginPageActions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -13,7 +13,6 @@ import autoBind from 'react-autobind';
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
         autoBind(this);
 
     }
@@ -49,7 +48,6 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         sessionID: state.loginReducer.sessionID,
         loading: state.loginReducer.loading
