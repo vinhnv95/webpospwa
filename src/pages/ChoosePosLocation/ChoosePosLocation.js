@@ -1,9 +1,5 @@
 import React, {Component} from "react";
 import { Redirect, withRouter } from 'react-router-dom';
-import cookie from "react-cookies";
-import axios from "axios";
-import db from "../../model/db";
-// import {loadConfiguration} from "../../helpers/SynchronizationHelper";
 import autoBind from 'react-autobind';
 import * as ChoosePosLocationActions from '../../actions/ChoosePosLocation/ChoosePosLocationActions';
 import {bindActionCreators} from 'redux';

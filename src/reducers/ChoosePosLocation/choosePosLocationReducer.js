@@ -1,4 +1,3 @@
-import cookie from 'react-cookies';
 import { 
     GET_ENABLE_SESSION_CONFIG, 
     GET_ENABLE_SESSION_CONFIG_SUCCESS, 
