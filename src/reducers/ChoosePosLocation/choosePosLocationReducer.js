@@ -15,6 +15,7 @@ import {
     ENTER_TO_POS_SUCCESS,
     ENTER_TO_POS_FAIL
 } from '../../constants/choosePosLocationActionTypes';
+import * as SynchronizationHelper from '../../helpers/SynchronizationHelper';
 
 const initialState = {
     enableSession: '',
@@ -94,6 +95,7 @@ export default function choosePosLocationReducer(state = initialState, action) {
                 loading: true
             });
         case ENTER_TO_POS_SUCCESS:
+            SynchronizationHelper.loadConfiguration();
             return Object.assign({}, state, {
                 currentPosId: state.posId,
                 loading: false

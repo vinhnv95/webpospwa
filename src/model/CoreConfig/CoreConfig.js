@@ -15,3 +15,11 @@ export function getStaffId() {
 export function getLocationList() {
     return db.core_config_data.get('allLocationIds');
 }
+
+export function getStaffName() {
+    return db.core_config_data.get('staffName');
+}
+
+export function getLocationName() {
+    return db.core_config_data.get('location_name');
+}

@@ -4,46 +4,46 @@ import * as CoreConfig from '../../model/CoreConfig/CoreConfig';
 import { combineEpics } from 'redux-observable';
 import * as PosApi from '../../api/Pos/PosApi';
 
-export const getEnableSessionConfigEpic = action$ => 
+const getEnableSessionConfigEpic = action$ => 
     action$.ofType(choosePosLocationActionTypes.GET_ENABLE_SESSION_CONFIG)
         .switchMap(() => 
             CoreConfig.getEnableSessionConfig()
                 .then(result => ChoosePosLocationActions.getEnableSessionConfigSuccess(result.value))
         );
 
-export const getCurrentPosIdEpic = action$ => 
+const getCurrentPosIdEpic = action$ => 
     action$.ofType(choosePosLocationActionTypes.GET_CURRENT_POS_ID)
         .switchMap(() => 
             CoreConfig.getCurrentPosId()
                 .then(result => ChoosePosLocationActions.getCurrentPosIdSuccess(result.value))
         );
 
-export const getStaffIdEpic = action$ => 
+const getStaffIdEpic = action$ => 
     action$.ofType(choosePosLocationActionTypes.GET_STAFF_ID)
         .switchMap(() => 
             CoreConfig.getStaffId()
                 .then(result => ChoosePosLocationActions.getStaffIdSuccess(result.value))
         );
 
-export const getLocationListEpic = action$ => 
+const getLocationListEpic = action$ => 
     action$.ofType(choosePosLocationActionTypes.GET_LOCATION_LIST)
         .switchMap(() => 
             CoreConfig.getLocationList()
                 .then(result => ChoosePosLocationActions.getLocationListSuccess(result.value))
         );
 
-export const getPosListEpic = action$ => 
+const getPosListEpic = action$ => 
     action$.ofType(choosePosLocationActionTypes.GET_POS_LIST)
         .switchMap(action => 
             PosApi.getPosList(action.locationId)
                 .then(response => ChoosePosLocationActions.getPosListSuccess(response.data))
     );
 
-export const selectLocationEpic = action$ =>
+const selectLocationEpic = action$ =>
     action$.ofType(choosePosLocationActionTypes.SELECT_LOCATION)
         .map(action => ChoosePosLocationActions.getPosList(action.locationId));
 
-export const enterToPos = (action$, store) =>
+const enterToPos = (action$, store) =>
     action$.ofType(choosePosLocationActionTypes.ENTER_TO_POS)
         .switchMap(() => {
             let state = store.getState().choosePosLocationReducer;

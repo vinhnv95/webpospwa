@@ -23,7 +23,6 @@ export default class Layout extends Component {
     }
 
     componentDidMount() {
-        syncData();
         setInterval(syncData, 8 * 60 * 1000);
     }
 

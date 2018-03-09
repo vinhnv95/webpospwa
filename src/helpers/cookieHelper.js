@@ -19,3 +19,11 @@ export function renewWebposSession() {
 export function getSessionId() {
     return cookie.load('sessionID');
 }
+
+export function removeSessionId() {
+    cookie.remove('sessionID', {path: '/'});
+}
+
+export function removeIsInstalled() {
+    cookie.remove('isInstalled', {path: '/'});
+}
