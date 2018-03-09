@@ -15,3 +15,7 @@ export function renewWebposSession() {
         cookie.save('sessionID', sessionID, {path: '/', expires});
     });
 }
+
+export function getSessionId() {
+    return cookie.load('sessionID');
+}

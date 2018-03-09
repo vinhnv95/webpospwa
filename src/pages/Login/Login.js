@@ -14,7 +14,6 @@ class Login extends Component {
     constructor(props) {
         super(props);
         autoBind(this);
-
     }
 
     handleSubmit(event) {

@@ -1,168 +1,49 @@
 import React, {Component} from "react";
-import {Redirect} from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import cookie from "react-cookies";
 import axios from "axios";
 import db from "../../model/db";
-import {loadConfiguration} from "../../helpers/SynchronizationHelper";
+// import {loadConfiguration} from "../../helpers/SynchronizationHelper";
+import autoBind from 'react-autobind';
+import * as ChoosePosLocationActions from '../../actions/ChoosePosLocation/ChoosePosLocationActions';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 class ChoosePosLocation extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            sessionID: cookie.load('sessionID'),
-            baseUrl: localStorage.getItem('baseUrl'),
-            corsUrl: localStorage.getItem('corsUrl'),
-            staffId: '',
-            locationList: [],
-            posList: [],
-            locationId: '',
-            posId: '',
-            currentPosId: null,
-            loading: false
-        };
-        this.handleSelectLocation = this.handleSelectLocation.bind(this);
-        this.handleSelectPos = this.handleSelectPos.bind(this);
-        this.handleEnterToPos = this.handleEnterToPos.bind(this);
-        console.log(this.state.sessionID);
+        autoBind(this);
     }
 
     componentWillMount() {
-        this.getEnableSessionConfig();
-        this.getCurrentPosId();
-        this.getStaffId();
-        this.getLocationList();
-    }
-
-    getEnableSessionConfig() {
-        db.core_config_data.get('webpos/general/enable_session').then(result => {
-            this.setState({
-                enableSession: result.value
-            });
-        });
-    }
-
-    getCurrentPosId() {
-        db.core_config_data.get('posId').then(result => {
-            this.setState({
-                currentPosId: result.value
-            });
-        });
-    }
-
-    getStaffId() {
-        db.core_config_data.get('staffId')
-            .then(result => {
-                this.setState({
-                    staffId: result.value
-                });
-            })
-    }
-
-    getLocationList() {
-        db.core_config_data.get('allLocationIds')
-            .then(result => {
-                this.setState({locationList: result.value});
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-
-    getPosList() {
-        let url = this.state.corsUrl + this.state.baseUrl + '/rest/default/V1/webpos/poslist';
-        let qs = require('qs');
-
-        let requestData = {
-            searchCriteria: {
-                filter_groups: {
-                    0: {
-                        filters: {
-                            0: {
-                                field: 'location_id',
-                                value: this.state.locationId,
-                                condition_type: 'eq'
-                            }
-                        },
-                    },
-                },
-                sortOrders: {
-                    1: {
-                        field: 'pos_name',
-                        direction: 'ASC'
-                    }
-                }
-            },
-            session: this.state.sessionID
-        };
-        axios.get(url, {
-            params: requestData,
-            paramsSerializer: function (params) {
-                return qs.stringify(params, {arrayFormat: 'repeat'})
-            },
-        })
-            .then(response => {
-                this.setState({
-                    posList: response.data.items,
-                    loading: false
-                });
-                console.log(response.data.items);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        this.props.actions.getEnableSessionConfig();
+        this.props.actions.getCurrentPosId();
+        this.props.actions.getStaffId();
+        this.props.actions.getLocationList();
     }
 
     handleSelectLocation(event) {
-        this.setState({
-            locationId: event.target.value,
-            loading: true
-        }, function () {
-            this.getPosList();
-        });
+        this.props.actions.selectLocation(event.target.value);
     }
 
     handleSelectPos(event) {
-        this.setState({
-            posId: event.target.value
-        });
+        this.props.actions.selectPos(event.target.value);
     }
 
-    handleEnterToPos(event) {
-        event.preventDefault();
-        let url = this.state.corsUrl + this.state.baseUrl + '/rest/default/V1/webpos/posassign?session=' + this.state.sessionID;
-        this.setState({
-            loading: true
-        });
-        axios.post(url, {
-            location_id: this.state.locationId,
-            current_session_id: this.state.sessionID,
-            pos_id: this.state.posId
-        })
-            .then(response => {
-                this.setState({
-                    currentPosId: this.state.posId,
-                    loading: false
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    loading: false
-                });
-                alert('Assign POS Failed');
-            })
-
+    handleEnterToPos() {
+        this.props.actions.enterToPos();
     }
 
     render() {
-        if (this.state.enableSession === undefined) {
+        if (!this.props.enableSession) {
             return '';
         }
-        if (this.state.enableSession === '1' && !this.state.currentPosId) {
+        if (this.props.enableSession === '1' && !this.props.currentPosId) {
             return (
                 <div className="ms-webpos">
                     <div className="login-screen">
                         {
-                            this.state.loading ?
+                            this.props.loading ?
                                 <div id="checkout-loader" className="loading-mask" style={{display: 'block'}}>
                                     <div className="loader">
                                     </div>
@@ -184,7 +65,7 @@ class ChoosePosLocation extends Component {
                                         >
                                             <option value="">--- Choose a Location ---</option>
                                             {
-                                                this.state.locationList.map((item, key) => <option key={key}
+                                                this.props.locationList.map((item, key) => <option key={key}
                                                                                                    value={item.value}>{item.text}</option>)
                                             }
                                         </select>
@@ -198,7 +79,7 @@ class ChoosePosLocation extends Component {
                                         >
                                             <option value="">--- Choose a POS ---</option>
                                             {
-                                                this.state.posList.map((item, key) => <option key={key}
+                                                this.props.posList.map((item, key) => <option key={key}
                                                                                               value={item.pos_id}
                                                                                               disabled={item.staff_id}>{item.pos_name}</option>)
                                             }
@@ -222,4 +103,23 @@ class ChoosePosLocation extends Component {
     }
 }
 
-export default ChoosePosLocation;
+function mapStateToProps(state) {
+    return {
+        enableSession: state.choosePosLocationReducer.enableSession,
+        staffId: state.choosePosLocationReducer.staffId,
+        locationList: state.choosePosLocationReducer.locationList,
+        posList: state.choosePosLocationReducer.posList,
+        locationId: state.choosePosLocationReducer.locationId,
+        posId: state.choosePosLocationReducer.posId,
+        currentPosId: state.choosePosLocationReducer.currentPosId,
+        loading: state.choosePosLocationReducer.loading
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(ChoosePosLocationActions, dispatch)
+    };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChoosePosLocation));
