@@ -42,14 +42,15 @@ export default class Install extends Component {
         }
         if (this.state.isInstalled) {
             return;
+        } else {
+            this.loadProductList();
+            this.loadCategory();
+            this.loadConfiguration();
+            // let expires = new Date();
+            // expires.setDate(expires.getDate() + 1);
+            // cookie.save('isInstalled', '1', {path: '/', expires});
+            cookie.save('isInstalled', '1', {path: '/'});
         }
-        this.loadProductList();
-        this.loadCategory();
-        this.loadConfiguration();
-        // let expires = new Date();
-        // expires.setDate(expires.getDate() + 1);
-        // cookie.save('isInstalled', '1', {path: '/', expires});
-        cookie.save('isInstalled', '1', {path: '/'});
     }
 
     loadProductList() {
@@ -147,8 +148,7 @@ export default class Install extends Component {
                             <div className="wrap-process">
                                 <div className="myProgress first-rates-myProgress">
                                     <div className="label-percent first-rates-label-percent">{percent}%</div>
-                                    <div className="myBar first-rates-myBar" style={{width: percent + '%'}}>
-                                    </div>
+                                    <div className="myBar first-rates-myBar" style={{width: percent + '%'}}></div>
                                 </div>
                             </div>
                         </div>

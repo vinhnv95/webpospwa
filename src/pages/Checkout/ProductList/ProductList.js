@@ -11,9 +11,9 @@ class ProductList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: cookie.load('sessionID'),
-            baseURL: localStorage.getItem('baseUrl'),
-            corsUrl: localStorage.getItem('corsUrl'),
+            // sessionID: cookie.load('sessionID'),
+            // baseURL: localStorage.getItem('baseUrl'),
+            // corsUrl: localStorage.getItem('corsUrl'),
             categoryId: null,
             searchText: '',
             currentPage: 1,

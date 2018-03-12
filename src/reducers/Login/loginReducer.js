@@ -1,13 +1,25 @@
 import cookie from 'react-cookies';
-import { LOGIN_SUCCESS, SUBMIT_LOGIN, LOGIN_FAIL } from '../../constants/loginPageActionTypes';
+import * as cookieHelper from '../../helpers/cookieHelper';
+import { 
+    LOGIN_SUCCESS, 
+    SUBMIT_LOGIN, 
+    LOGIN_FAIL, 
+    GET_SESSION_ID 
+} from '../../constants/loginPageActionTypes';
 
 const initialState = {
-    sessionID: cookie.load('sessionID'),
-    loading: false
+    sessionID: '',
+    loading: true
 };
 
 export default function loginReducer(state = initialState, action) {
     switch (action.type) {
+        case GET_SESSION_ID:
+            let sessionID = cookieHelper.getSessionId();
+            return Object.assign({}, state, {
+                sessionID: sessionID,
+                loading: false
+              });
         case SUBMIT_LOGIN:
             return Object.assign({}, state, {
                 loading: true
@@ -15,8 +27,9 @@ export default function loginReducer(state = initialState, action) {
         case LOGIN_SUCCESS:
             let expires = new Date();
             expires.setDate(expires.getDate() + 1);
-            cookie.remove('isInstalled');
+            // cookie.remove('isInstalled');
             cookie.save('sessionID', action.response.data, {path: '/'});
+            console.log(action.response.data);
             return Object.assign({}, state, {
                 sessionID: action.response.data,
                 loading: false

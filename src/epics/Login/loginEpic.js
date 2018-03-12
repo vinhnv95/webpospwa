@@ -4,7 +4,7 @@ import { loginSuccess, loginFail } from '../../actions/Login/LoginPageActions';
 
 export const loginEpic = action$ => 
     action$.ofType(loginPageActionTypes.SUBMIT_LOGIN)
-        .mergeMap(action => 
+        .switchMap(action => 
             login(action.staff)
                 .then(response => loginSuccess(response))
                 .catch(error => loginFail(error))

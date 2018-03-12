@@ -9,11 +9,20 @@ import * as LoginPageActions from '../../actions/Login/LoginPageActions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import autoBind from 'react-autobind';
+import * as cookieHelper from '../../helpers/cookieHelper';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         autoBind(this);
+    }
+
+    componentDidMount() {
+        cookieHelper.removeIsInstalled();
+    }
+
+    componentDidMount() {
+        this.props.actions.getSessionId();
     }
 
     handleSubmit(event) {

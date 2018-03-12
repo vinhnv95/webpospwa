@@ -6,6 +6,7 @@ import {
     GET_LOCATION_NAME_SUCCESS
 } from "../../constants/menuActionTypes";
 import * as cookieHelper from "../../helpers/cookieHelper";
+import cookie from "react-cookies";
 
 const initialState = {
     loading: false,

@@ -10,8 +10,8 @@ let baseURL = localStorage.getItem('baseUrl');
 
 export function syncData() {
     console.log('sync data');
-    renewWebposSession();
     loadConfiguration();
+    renewWebposSession();    
     loadProductList();
     loadCategory();
 }

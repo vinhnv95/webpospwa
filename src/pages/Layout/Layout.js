@@ -15,7 +15,7 @@ export default class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessionID: cookie.load('sessionID'),
+            // sessionID: cookie.load('sessionID'),
             menuIsActive: false
         };
         this.openMenu = this.openMenu.bind(this);
@@ -23,6 +23,7 @@ export default class Layout extends Component {
     }
 
     componentDidMount() {
+        // syncData();
         setInterval(syncData, 8 * 60 * 1000);
     }
 
@@ -39,7 +40,7 @@ export default class Layout extends Component {
     }
 
     render() {
-        if (this.state.sessionID) {
+        // if (this.state.sessionID) {
             return (
                 <div className="ms-webpos">
                     <div id="o-wrapper"
@@ -58,8 +59,8 @@ export default class Layout extends Component {
                     <Menu isActive={this.state.menuIsActive} closeMenu={this.closeMenu}/>
                 </div>
             );
-        } else {
-            return <Redirect to='/'/>;
-        }
+        // } else {
+        //     return <Redirect to='/'/>;
+        // }
     }
 }
